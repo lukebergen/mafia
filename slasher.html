@@ -1,0 +1,18 @@
+<head>
+  <title>Slasher</title>
+</head>
+
+<body>
+  {{> header}}
+  {{> gameList}}
+</body>
+
+<template name="header">
+  {{> nav}}
+</template>
+
+<template name="gameList">
+  <h3>Game List</h3>
+  <input type="button" id="newGameButton" value="New Game" />
+  {{gameList}}
+</template>
