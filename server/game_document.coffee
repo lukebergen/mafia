@@ -4,13 +4,13 @@ game_doc = ->
     name: ""
     creator: undefined
     created_at: new Date()
-    start_time: undefined
-    end_time: undefined
+    startTime: undefined
+    endTime: undefined
     result: undefined
-    players: {}
-    public_chat: {}
-    slasher_chat: {}
-    game_periods: {}
+    players: []
+    publicChat: []
+    slasherChat: []
+    gamePeriods: []
   }
 
 uuid = ->

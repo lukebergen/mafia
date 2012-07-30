@@ -1,26 +1,38 @@
-root = global ? window
-
 Meteor.subscribe("games")
 
 Games = new Meteor.Collection("games")
 
-client_id = uuid()
+clientId = uuid()
 
 root.Template.nav.events =
   "click #deleteGames": ->
     Meteor.call("deleteAllGames")
 
-root.Template.games_view.active_games = ->
+root.Template.gamesView.activeGames = ->
   Games.find({})
 
-root.Template.game_item.events =
+root.Template.gameItem.events =
   "click #joinGame": ->
-    Session.set("currentGameId", this.gameId)
-    Meteor.call("joinGame", client_id, Session.get("currentGameId"))
+    joinGame(this.gameId)
 
-root.Template.games_view.events = 
+root.Template.gamesView.currentGame = ->
+  Session.get('currentGameId')
+
+root.Template.gameView.currentGame = ->
+  Games.findOne({gameId: Session.get('currentGameId')})
+
+root.Template.gamesView.events = 
   "click #newGameButton": ->
     n = prompt("name?")
-    gameId = Meteor.call("newGame", n, client_id)
-    Session.set("currentGameId", gameId)
-    Meteor.call("joinGame", client_id, Session.get("currentGameId"))
+    gameId = Meteor.call("newGame", n, clientId)
+    joinGame(gameId)
+
+root.Template.gameView.events =
+  "click #leaveGame": ->
+    leaveGame()
+
+root.Template.gameView.gameName = ->
+  if (Session.get("currentGameId") != undefined)
+    return Games.findOne({gameId: Session.get("currentGameId")}).name
+  else
+    return ""

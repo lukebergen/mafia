@@ -4,35 +4,41 @@
 
 <body>
   {{> header}}
-  {{> games_view}}
-  {{> game_view}}
+  {{> gamesView}}
+  {{> gameView}}
 </body>
 
 <template name="header">
   {{> nav}}
 </template>
 
-<template name="games_view">
+<template name="gamesView">
   <div id="gameList">
-    <h3>Game List</h3>
-    <input type="button" id="newGameButton" value="New Game" />
-    <ul>
-      {{#each active_games}}
-        <li>
-          {{> game_item}}
-        </li>
-      {{/each}}
-    </ul>
+    {{#unless currentGame}}
+      <h3>Game List</h3>
+      <input type="button" id="newGameButton" value="New Game" />
+      <ul>
+        {{#each activeGames}}
+          <li>
+            {{> gameItem}}
+          </li>
+        {{/each}}
+      </ul>
+    {{/unless}}
   </div>
 </template>
 
-<template name="game_item">
-  a game: {{this.name}} <input type='button' id='joinGame' value='Join Game'/>
+<template name="gameItem">
+  Game name: {{this.name}}.<BR>
+  Player count: {{this.players.length}} <input type='button' id='joinGame' value='Join Game'/>
 </template>
 
-<template name="game_view">
+<template name="gameView">
   <div id="gameView">
-    a game
+    {{#if currentGame}}
+      <h2>{{gameName}}</h2>
+      <input type="button" id="leaveGame" value="Leave Game" />
+    {{/if}}
   </div>
 </template>
 

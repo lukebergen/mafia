@@ -6,26 +6,32 @@ Meteor.publish "games", ->
     name: true
     creator: true
     created_at: true
-    start_time: true
-    end_time: true
+    startTime: true
+    endTime: true
     result: true
     players: true
 
 Meteor.methods
-  newGame: (name, client_id) ->
+  newGame: (name, clientId) ->
     new_game = game_doc()
     new_game.name = name
-    new_game.creator = client_id
+    new_game.creator = clientId
     Games.insert(new_game)
     new_game.gameId
+
   deleteAllGames: ->
     Games.remove({})
     "success"
+
   changeName: (id, new_name) ->
     Games.update({gameId: id}, {$set: {name: new_name}})
-  putsIt: ->
-    console.log("game count: #{Games.find({}).count()}")
 
+  joinGame: (clientId, gameId) ->
+    Games.update({gameId: gameId}, {$push: {players: clientId}})
+
+  leaveGame: (clientId, gameId) ->
+    game = Games.findOne({gameId: gameId})
+    Games.update({gameId: game.gameId}, $pull: {players: clientId})
 
 Meteor.startup ->
   _.each ['games'], (collection) ->
