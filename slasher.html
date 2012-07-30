@@ -4,15 +4,41 @@
 
 <body>
   {{> header}}
-  {{> gameList}}
+  {{> games_view}}
+  {{> game_view}}
 </body>
 
 <template name="header">
   {{> nav}}
 </template>
 
-<template name="gameList">
-  <h3>Game List</h3>
-  <input type="button" id="newGameButton" value="New Game" />
-  {{gameList}}
+<template name="games_view">
+  <div id="gameList">
+    <h3>Game List</h3>
+    <input type="button" id="newGameButton" value="New Game" />
+    <ul>
+      {{#each active_games}}
+        <li>
+          {{> game_item}}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="game_item">
+  a game: {{this.name}} <input type='button' id='joinGame' value='Join Game'/>
+</template>
+
+<template name="game_view">
+  <div id="gameView">
+    a game
+  </div>
+</template>
+
+<template name="nav">
+  <div id="nav">
+    a nav
+  </div>
+  <input type="button" id="deleteGames" value="Delete All Games" />
 </template>

@@ -1,8 +1,26 @@
 root = global ? window
 
-root.Template.gameList.gameList = ->
-  "a list of games"
+Meteor.subscribe("games")
 
-root.Template.gameList.events = 
+Games = new Meteor.Collection("games")
+
+client_id = uuid()
+
+root.Template.nav.events =
+  "click #deleteGames": ->
+    Meteor.call("deleteAllGames")
+
+root.Template.games_view.active_games = ->
+  Games.find({})
+
+root.Template.game_item.events =
+  "click #joinGame": ->
+    Session.set("currentGameId", this.gameId)
+    Meteor.call("joinGame", client_id, Session.get("currentGameId"))
+
+root.Template.games_view.events = 
   "click #newGameButton": ->
-    console.log "You pressed the button"
+    n = prompt("name?")
+    gameId = Meteor.call("newGame", n, client_id)
+    Session.set("currentGameId", gameId)
+    Meteor.call("joinGame", client_id, Session.get("currentGameId"))
