@@ -30,7 +30,7 @@ Meteor.methods
     Game.update({gameId: gameId}, {$push: {players: clientId}})
 
   leaveGame: (clientId, gameId) ->
-    game = Games.findOne({gameId: gameId})
+    game = Game.findOne({gameId: gameId})
     Game.update({gameId: game.gameId}, $pull: {players: clientId})
 
 Meteor.startup ->
