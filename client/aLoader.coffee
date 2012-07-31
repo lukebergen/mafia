@@ -8,12 +8,12 @@ uuid = ->
 
 joinGame = (gameId) ->
   Session.set("currentGameId", gameId)
-  Meteor.call("joinGame", clientId, Session.get("currentGameId"))
+  Meteor.call("joinGame", Session.get("clientId"), Session.get("currentGameId"))
 
 leaveGame = ->
   leavingId = Session.get("currentGameId")
   Session.set("currentGameId", undefined)
-  Meteor.call("leaveGame", clientId, leavingId)
+  Meteor.call("leaveGame", Session.get("clientId"), leavingId)
 
 killPlayer = (clientId, gameId) ->
-  Meteor.call("remove")
+  #Meteor.call("remove")

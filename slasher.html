@@ -4,12 +4,20 @@
 
 <body>
   {{> header}}
+  {{#unless clientName}}
+    {{> getName }}
+  {{/unless}}
   {{> gamesView}}
   {{> gameView}}
 </body>
 
 <template name="header">
   {{> nav}}
+</template>
+
+<template name="getName">
+  <input id="clientSetName" value="" />
+  <input type="button" value="Set Name" />
 </template>
 
 <template name="gamesView">
@@ -37,6 +45,7 @@
   <div id="gameView">
     {{#if currentGame}}
       <h2>{{gameName}}</h2>
+
       <input type="button" id="leaveGame" value="Leave Game" />
     {{/if}}
   </div>
