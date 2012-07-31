@@ -1,7 +1,7 @@
-Games = new Meteor.Collection("games")
+Game = new Meteor.Collection("games")
 
 Meteor.publish "games", ->
-  Games.find {}, fields:
+  Game.find {}, fields:
     gameId: true
     name: true
     creator: true
@@ -16,22 +16,22 @@ Meteor.methods
     new_game = game_doc()
     new_game.name = name
     new_game.creator = clientId
-    Games.insert(new_game)
+    Game.insert(new_game)
     new_game.gameId
 
   deleteAllGames: ->
-    Games.remove({})
+    Game.remove({})
     "success"
 
   changeName: (id, new_name) ->
-    Games.update({gameId: id}, {$set: {name: new_name}})
+    Game.update({gameId: id}, {$set: {name: new_name}})
 
   joinGame: (clientId, gameId) ->
-    Games.update({gameId: gameId}, {$push: {players: clientId}})
+    Game.update({gameId: gameId}, {$push: {players: clientId}})
 
   leaveGame: (clientId, gameId) ->
     game = Games.findOne({gameId: gameId})
-    Games.update({gameId: game.gameId}, $pull: {players: clientId})
+    Game.update({gameId: game.gameId}, $pull: {players: clientId})
 
 Meteor.startup ->
   _.each ['games'], (collection) ->

@@ -4,56 +4,6 @@
 
 <body>
   {{> header}}
-  {{#unless clientName}}
-    {{> getName }}
-  {{/unless}}
-  {{> gamesView}}
+  {{> gameList}}
   {{> gameView}}
 </body>
-
-<template name="header">
-  {{> nav}}
-</template>
-
-<template name="getName">
-  <input id="clientSetName" value="" />
-  <input type="button" value="Set Name" />
-</template>
-
-<template name="gamesView">
-  <div id="gameList">
-    {{#unless currentGame}}
-      <h3>Game List</h3>
-      <input type="button" id="newGameButton" value="New Game" />
-      <ul>
-        {{#each activeGames}}
-          <li>
-            {{> gameItem}}
-          </li>
-        {{/each}}
-      </ul>
-    {{/unless}}
-  </div>
-</template>
-
-<template name="gameItem">
-  Game name: {{this.name}}.<BR>
-  Player count: {{this.players.length}} <input type='button' id='joinGame' value='Join Game'/>
-</template>
-
-<template name="gameView">
-  <div id="gameView">
-    {{#if currentGame}}
-      <h2>{{gameName}}</h2>
-
-      <input type="button" id="leaveGame" value="Leave Game" />
-    {{/if}}
-  </div>
-</template>
-
-<template name="nav">
-  <div id="nav">
-    a nav
-  </div>
-  <input type="button" id="deleteGames" value="Delete All Games" />
-</template>

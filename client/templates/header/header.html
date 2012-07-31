@@ -1,0 +1,20 @@
+<template name="header">
+  <div id="header">
+    {{> nav}}
+    {{> name}}
+  </div>
+</template>
+
+<template name="nav">
+  <div id="nav">
+    a nav
+  </div>
+  <input type="button" id="deleteGames" value="Delete All Games" />
+</template>
+
+<template name="name">
+  <div id="clientName">
+    <input id="clientSetName" value="{{getName}}" />
+    <input type="button" id="nameSetButton" value="Set Name" />
+  </div>
+</template>

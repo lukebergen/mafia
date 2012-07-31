@@ -1,0 +1,20 @@
+<template name="gameList">
+  <div id="gameList">
+    {{#unless currentGame}}
+      <h3>Game List</h3>
+      <input type="button" id="newGameButton" value="New Game" />
+      <ul>
+        {{#each activeGames}}
+          <li>
+            {{> gameItem}}
+          </li>
+        {{/each}}
+      </ul>
+    {{/unless}}
+  </div>
+</template>
+
+<template name="gameItem">
+  Game name: {{this.name}}.<BR>
+  Player count: {{this.players.length}} <input type='button' id='joinGame' value='Join Game'/>
+</template>
