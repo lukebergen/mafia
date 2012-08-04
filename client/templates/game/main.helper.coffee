@@ -1,6 +1,7 @@
-root.Template.gameView.events =
-  "click #leaveGame": ->
-    leaveGame()
+root.leaveGame = ->
+  leavingId = Session.get("currentGameId")
+  Session.set("currentGameId", undefined)
+  Meteor.call("leaveGame", Session.get("clientId"), leavingId)
 
 root.Template.gameView.gameName = ->
   if (Session.get("currentGameId") != undefined)
@@ -9,3 +10,7 @@ root.Template.gameView.gameName = ->
     return ""
 
 root.Template.gameView.currentGame = root.currentGame
+
+root.Template.gameView.events =
+  "click #leaveGame": ->
+    root.leaveGame()

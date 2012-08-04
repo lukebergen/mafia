@@ -27,13 +27,22 @@ Meteor.methods
     Game.update({gameId: id}, {$set: {name: new_name}})
 
   joinGame: (clientId, gameId) ->
-    Game.update({gameId: gameId}, {$push: {players: clientId}})
+    Game.update({gameId: gameId}, {$push: {players: {id: clientId, lastBeat: new Date()}}})
 
   leaveGame: (clientId, gameId) ->
-    game = Game.findOne({gameId: gameId})
-    Game.update({gameId: game.gameId}, $pull: {players: clientId})
+    console.log("#{clientId} is leaving game #{gameId}")
+    Game.update({gameId: gameId}, {$pull: {players: {id: clientId}}})
+
+  heartBeat: (clientId, gameId) ->
+    "updated"
 
 Meteor.startup ->
   _.each ['games'], (collection) ->
     _.each ['insert', 'update', 'remove'], (method) ->
       Meteor.default_server.method_handlers['/' + collection + '/' + method] = ->
+
+disconnectOldClients = ->
+  console.log("doing it")
+  #Game.find({players: 10})
+
+setInterval disconnectOldClients, 6000
