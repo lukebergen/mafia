@@ -1,15 +1,17 @@
 Game = new Meteor.Collection("games")
 
 Meteor.publish "games", ->
-  Game.find {}, fields:
-    gameId: true
-    name: true
-    creator: true
-    created_at: true
-    startTime: true
-    endTime: true
-    result: true
-    players: true
+  Game.find({})
+# Meteor.publish "games", ->
+#   Game.find {}, fields:
+#     gameId: true
+#     name: true
+#     creator: true
+#     created_at: true
+#     startTime: true
+#     endTime: true
+#     result: true
+#     players: true
 
 Meteor.methods
   newGame: (name, clientId) ->
