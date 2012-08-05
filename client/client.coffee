@@ -4,6 +4,10 @@ Game = new Meteor.Collection("games")
 
 Session.set("clientId", uuid())
 
+root.randomNames = ["Bob", "Cindy", "Carl", "Jane", "Durp"]
+
+Session.set("clientName", root.randomNames[Math.round(Math.random() * root.randomNames.length)])
+
 root.heartBeat = ->
   Meteor.call("heartBeat", Session.get("clientId"), Session.get("currentGameId"))
 
@@ -17,4 +21,16 @@ root.currentGame = ->
 
 root.joinGame = (gameId) ->
   Session.set("currentGameId", gameId)
-  Meteor.call("joinGame", Session.get("clientId"), Session.get("currentGameId"))
+  Meteor.call("joinGame", Session.get("clientId"), Session.get("clientName"), Session.get("currentGameId"))
+
+Meteor.methods
+  addMessage: (gameId, clientId, message) ->
+    name = Session.get("clientName")
+    name = if name then "#{name}: " else ""
+    $("#publicChat ul").append("<li>#{name}#{message}</li>")
+    dv = $("#publicChat")
+    root.lastScrollTop ?= dv.scrollTop()
+    if (dv.scrollTop() >= root.lastScrollTop)
+      dv.scrollTop(999999999)
+      root.lastScrollTop = dv.scrollTop()
+    ""

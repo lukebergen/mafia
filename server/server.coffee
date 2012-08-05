@@ -28,8 +28,8 @@ Meteor.methods
   changeName: (id, new_name) ->
     Game.update({gameId: id}, {$set: {name: new_name}})
 
-  joinGame: (clientId, gameId) ->
-    Game.update({gameId: gameId}, {$push: {players: {id: clientId, lastBeat: new Date()}}})
+  joinGame: (clientId, clientName, gameId) ->
+    Game.update({gameId: gameId}, {$push: {players: {id: clientId, name: clientName, lastBeat: new Date()}}})
 
   leaveGame: (clientId, gameId) ->
     console.log("#{clientId} is leaving game #{gameId}")
@@ -37,6 +37,18 @@ Meteor.methods
 
   heartBeat: (clientId, gameId) ->
     Game.update({'players.id': clientId}, {$set: {'players.$.lastBeat': new Date()}}, true, true)
+
+  addMessage: (gameId, clientId, message) ->
+    #clientName = Game.findOne({gameId: gameId, "players.id": clientId})
+    msg_obj = {name: "something", message: message}
+    msg_obj.name = Game.findOne({gameId: gameId}).players.filter((p) ->
+      p.id == clientId
+    )[0]?.name
+    console.log(msg_obj)
+    Game.update({gameId: gameId}, {$push: {publicChat: msg_obj}})
+
+  setClientName: (clientId, clientName) ->
+    Game.update({"players.clientId": clientId}, {$set: {"players.$.name": clientName}}, true, true)
 
 Meteor.startup ->
   _.each ['games'], (collection) ->

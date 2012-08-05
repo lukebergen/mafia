@@ -2,8 +2,22 @@
   <div id="gameView">
     {{#if currentGame}}
       <h2>{{gameName}}</h2>
-
       <input type="button" id="leaveGame" value="Leave Game" />
+      {{> publicChatArea}}
     {{/if}}
   </div>
+</template>
+
+<template name="publicChatArea">
+  <div id="publicChat">
+    <ul>
+      {{#each publicMessages}}
+        <li>
+          {{formatMessage}}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <input id="newMessageInput" /><button id="sendMessage">Chat</button>
+  {{updatePublicChat}}
 </template>
