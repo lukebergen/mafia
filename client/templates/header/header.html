@@ -6,15 +6,30 @@
 </template>
 
 <template name="nav">
-  <div id="nav">
-    a nav
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+        <div class="nav-collapse">
+          <ul class="nav" style="margin-top:10px;">
+            <li>Slasher!</li>
+            <li>
+              <input type="button" id="newGameButton" value="New Game" />
+            </li>
+            <li>
+              <input type="button" id="deleteGames" value="Delete All Games" />
+            </li>
+            <li>
+              <input id="clientSetName" value="{{getName}}" />
+              <input type="button" id="nameSetButton" value="Set Name" />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  <input type="button" id="deleteGames" value="Delete All Games" />
 </template>
 
 <template name="name">
   <div id="clientName">
-    <input id="clientSetName" value="{{getName}}" />
-    <input type="button" id="nameSetButton" value="Set Name" />
   </div>
 </template>

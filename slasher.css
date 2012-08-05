@@ -12,3 +12,7 @@
 #playerList {
   float: left;
 }
+
+.nav li {
+  margin-right: 50px;
+}
