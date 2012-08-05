@@ -34,15 +34,16 @@ Meteor.methods
     Game.update({gameId: gameId}, {$pull: {players: {id: clientId}}})
 
   heartBeat: (clientId, gameId) ->
-    "updated"
+    Game.update({'players.id': clientId}, {$set: {'players.$.lastBeat': new Date()}}, true, true)
 
 Meteor.startup ->
   _.each ['games'], (collection) ->
     _.each ['insert', 'update', 'remove'], (method) ->
       Meteor.default_server.method_handlers['/' + collection + '/' + method] = ->
 
-disconnectOldClients = ->
-  console.log("doing it")
-  #Game.find({players: 10})
+disconnectDeadClients = ->
+  Fiber ->
+    Game.update({}, {$pull: {players: {lastBeat: {$lt: (new Date((new Date()).getTime() - 6000)) }}}}, true, true)
+  .run()
 
-setInterval disconnectOldClients, 6000
+setInterval disconnectDeadClients, 6000
