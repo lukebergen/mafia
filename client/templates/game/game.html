@@ -9,6 +9,16 @@
 </template>
 
 <template name="publicChatArea">
+  <div id="playerList">
+    Player List:
+    <ul>
+      {{#each playerNames}}
+        <li>
+          {{this}}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
   <div id="publicChat">
     <ul>
       {{#each publicMessages}}

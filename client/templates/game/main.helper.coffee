@@ -24,6 +24,10 @@ root.Template.publicChatArea.updatePublicChat = ->
 root.Template.publicChatArea.formatMessage = ->
   "#{this.name}: #{this.message}"
 
+root.Template.publicChatArea.playerNames = ->
+  Game.findOne(gameId: Session.get("currentGameId")).players.map (p) ->
+    p.name
+
 addMessage = (message) ->
   Meteor.call("addMessage", Session.get("currentGameId"), Session.get("clientId"), message, ->)
 

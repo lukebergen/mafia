@@ -8,3 +8,7 @@
 #newMessageInput {
   width: 598px;
 }
+
+#playerList {
+  float: left;
+}
