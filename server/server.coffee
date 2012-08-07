@@ -50,6 +50,11 @@ Meteor.methods
   setClientName: (clientId, clientName) ->
     Game.update({"players.clientId": clientId}, {$set: {"players.$.name": clientName}}, true, true)
 
+  startGame: (gameId) ->
+    Game.update({gameId: gameId}, {$set: {startTime: new Date()}})
+    console.log(Game.findOne(gameId: gameId))
+    "success"
+
 Meteor.startup ->
   _.each ['games'], (collection) ->
     _.each ['insert', 'update', 'remove'], (method) ->

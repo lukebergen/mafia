@@ -1,18 +1,10 @@
 #publicChat {
   height: 300px;
-  width: 600px;
+/*  width: 600px;*/
   overflow: auto;
   border: 1px solid;
 }
 
-#newMessageInput {
-  width: 598px;
-}
-
-#playerList {
-  float: left;
-}
-
-.nav li {
+/*.nav li {
   margin-right: 50px;
-}
+}*/

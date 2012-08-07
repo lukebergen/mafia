@@ -1,33 +1,52 @@
 <template name="gameView">
   <div id="gameView">
     {{#if currentGame}}
-      <h2>{{gameName}}</h2>
-      <input type="button" id="leaveGame" value="Leave Game" />
+      <div class="row">
+        <div class="span2">
+          <h2>{{gameName}}</h2>
+        </div>
+        <div class="span2">
+          <input type="button" id="leaveGame" value="Leave Game" />
+        </div>
+        <div class="span2">
+          {{#if gameStarted}}
+            Game in progress
+          {{else}}
+            <input type="button" id="startGame" value="Start Game" />
+          {{/if}}
+        </div>
+      </div>
       {{> publicChatArea}}
     {{/if}}
   </div>
 </template>
 
 <template name="publicChatArea">
-  <div id="playerList">
-    Player List:
-    <ul>
-      {{#each playerNames}}
-        <li>
-          {{this}}
-        </li>
-      {{/each}}
-    </ul>
+  <div class="row">
+    <div class="span2">
+      <div id="playerList">
+        Player List:
+        <ul>
+          {{#each playerNames}}
+            <li>
+              {{this}}
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <div class="span8">
+      <div id="publicChat">
+        <ul>
+          {{#each publicMessages}}
+            <li>
+              {{formatMessage}}
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+      <input id="newMessageInput" class="span8" /><button id="sendMessage">Chat</button>
+    </div>
   </div>
-  <div id="publicChat">
-    <ul>
-      {{#each publicMessages}}
-        <li>
-          {{formatMessage}}
-        </li>
-      {{/each}}
-    </ul>
-  </div>
-  <input id="newMessageInput" /><button id="sendMessage">Chat</button>
   {{updatePublicChat}}
 </template>

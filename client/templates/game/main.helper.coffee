@@ -10,6 +10,9 @@ root.Template.gameView.gameName = ->
   else
     return ""
 
+root.Template.gameView.gameStarted = ->
+  Game.findOne({gameId: Session.get("currentGameId")}).startTime != null
+
 root.Template.publicChatArea.publicMessages = ->
   Game.findOne({gameId: Session.get("currentGameId")}).publicChat
 
@@ -39,7 +42,11 @@ root.Template.gameView.currentGame = root.currentGame
 
 root.Template.gameView.events =
   "click #leaveGame": ->
-    root.leaveGame()
+    if (!root.Template.gameView.gameStarted() || confirm("The game is in progress. Leaving now means your character will die.  Continue?"))
+      root.leaveGame()
+
+  "click #startGame": ->
+    Meteor.call("startGame", Session.get("currentGameId"))
 
   "keyup #newMessageInput": (event) ->
     if (event.keyCode == 13)
