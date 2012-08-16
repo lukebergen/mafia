@@ -8,6 +8,19 @@ root.randomNames = ["Bob", "Cindy", "Carl", "Jane", "Durp"]
 
 Session.set("clientName", root.randomNames[Math.round(Math.random() * root.randomNames.length)])
 
+root.gameStatus = (game) ->
+  if (game.startTime == null)
+    return "Waiting for players"
+  else if (game.endTime == null)
+    return "In Progress"
+  else
+    return "Finished"
+
+root.currentPlayer = ->
+  Game.findOne({gameId: Session.get("currentGameId")}).players.filter ((p) ->
+    p.clientId == Session.get("clientId")
+  )[0]
+
 root.heartBeat = ->
   Meteor.call("heartBeat", Session.get("clientId"), Session.get("currentGameId"))
 

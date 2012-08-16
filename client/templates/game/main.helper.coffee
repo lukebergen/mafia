@@ -13,6 +13,13 @@ root.Template.gameView.gameName = ->
 root.Template.gameView.gameStarted = ->
   Game.findOne({gameId: Session.get("currentGameId")}).startTime != null
 
+root.Template.gameView.userRole = ->
+  alert("doing userRole for some reason")
+  root.currentPlayer()?.role
+
+root.Template.gameView.startGame = ->
+  Meteor.call("startGame", Session.get("currentGameId"))
+
 root.Template.publicChatArea.publicMessages = ->
   Game.findOne({gameId: Session.get("currentGameId")}).publicChat
 
@@ -27,7 +34,7 @@ root.Template.publicChatArea.updatePublicChat = ->
 root.Template.publicChatArea.formatMessage = ->
   "#{this.name}: #{this.message}"
 
-root.Template.publicChatArea.playerNames = ->
+root.Template.playerList.playerNames = ->
   Game.findOne(gameId: Session.get("currentGameId")).players.map (p) ->
     p.name
 

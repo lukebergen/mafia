@@ -14,6 +14,8 @@
 </template>
 
 <template name="gameItem">
-  Game name: {{this.name}}.<BR>
-  Player count: {{this.players.length}} <input type='button' id='joinGame' value='Join Game'/>
+  <h4>{{this.name}}</h4>
+  Player count: {{this.players.length}}<br>
+  Status: {{status}}<br>
+  <button id='joinGame' class="btn">Join Game</button>
 </template>

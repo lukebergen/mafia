@@ -5,6 +5,10 @@
   border: 1px solid;
 }
 
+#playerList li {
+  margin: 10px 10px 10px 10px;
+}
+
 /*.nav li {
   margin-right: 50px;
 }*/

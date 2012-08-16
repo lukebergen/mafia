@@ -29,7 +29,7 @@ Meteor.methods
     Game.update({gameId: id}, {$set: {name: new_name}})
 
   joinGame: (clientId, clientName, gameId) ->
-    Game.update({gameId: gameId}, {$push: {players: {id: clientId, name: clientName, lastBeat: new Date()}}})
+    Game.update({gameId: gameId}, {$push: {players: {id: clientId, name: clientName, lastBeat: new Date(), role: ""}}})
 
   leaveGame: (clientId, gameId) ->
     console.log("#{clientId} is leaving game #{gameId}")
@@ -51,7 +51,15 @@ Meteor.methods
     Game.update({"players.clientId": clientId}, {$set: {"players.$.name": clientName}}, true, true)
 
   startGame: (gameId) ->
-    Game.update({gameId: gameId}, {$set: {startTime: new Date()}})
+    console.log("attempting to start game: #{gameId}")
+    game = Game.findOne(gameId: gameId)
+    return "insufficient player count" if (game.players.length < 4)
+
+    # something after here just destroys the server/DB requiring a meteor reset
+
+    root.assignRoles(game)
+
+    Game.update({gameId: gameId}, {$set: {startTime: new Date(), status: "In Progress"}})
     console.log(Game.findOne(gameId: gameId))
     "success"
 

@@ -6,47 +6,52 @@
           <h2>{{gameName}}</h2>
         </div>
         <div class="span2">
-          <input type="button" id="leaveGame" value="Leave Game" />
+          <button id="leaveGame" class="btn">Leave Game</button>
         </div>
         <div class="span2">
           {{#if gameStarted}}
             Game in progress
+            Your Role: {{userRole}}
           {{else}}
-            <input type="button" id="startGame" value="Start Game" />
+            <button id="startGame" class="btn">Start Game</button>
           {{/if}}
         </div>
       </div>
-      {{> publicChatArea}}
+      <div class="row">
+        {{> playerList}}
+        {{> publicChatArea}}
+      </div>
     {{/if}}
   </div>
 </template>
 
+<template name="playerList">
+  <div class="span2">
+    <div id="playerList">
+      Player List:
+      <ul class="unstyled">
+        {{#each playerNames}}
+          <li>
+            {{this}}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>
+
 <template name="publicChatArea">
-  <div class="row">
-    <div class="span2">
-      <div id="playerList">
-        Player List:
-        <ul>
-          {{#each playerNames}}
-            <li>
-              {{this}}
-            </li>
-          {{/each}}
-        </ul>
-      </div>
+  <div class="span8">
+    <div id="publicChat">
+      <ul>
+        {{#each publicMessages}}
+          <li>
+            {{formatMessage}}
+          </li>
+        {{/each}}
+      </ul>
     </div>
-    <div class="span8">
-      <div id="publicChat">
-        <ul>
-          {{#each publicMessages}}
-            <li>
-              {{formatMessage}}
-            </li>
-          {{/each}}
-        </ul>
-      </div>
-      <input id="newMessageInput" class="span8" /><button id="sendMessage">Chat</button>
-    </div>
+    <input id="newMessageInput" class="span8" /><button id="sendMessage" class="btn">Chat</button>
   </div>
   {{updatePublicChat}}
 </template>
