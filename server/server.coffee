@@ -54,7 +54,7 @@ Meteor.methods
   startGame: (gameId) ->
     game = Game.findOne({gameId: gameId})
     if (game.players.length < 4)
-      return "insufficient player count"
+      return "insufficient player count (you need at least 4 players to play)."
     else
       msg_obj = {name: narratorName, message: "Game Start"}
       msg_obj2 = {name: narratorName, message: "It is day time. Please vote on which player to lynch."}
