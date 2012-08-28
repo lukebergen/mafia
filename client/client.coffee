@@ -4,7 +4,7 @@ Game = new Meteor.Collection("games")
 
 Session.set("clientId", uuid())
 
-root.randomNames = ["Bob", "Cindy", "Carl", "Jane", "Durp"]
+root.randomNames = ["Agosto", "Alessandro", "Angelo", "Antonio", "Armando", "Carlo", "Dante", "Emilio", "Nico", "Piero", "Raffaele", "Rocco", "Valentino", "Alessandra", "Alisa", "Andria", "Belinda", "Belladonna", "Bianca", "Caprice", "Carmela", "Donata", "Isabella", "Loretta", "Mariabella", "Phebe", "Rosalia", "Rosetta", "Vivian"]
 
 Session.set("clientName", root.randomNames[Math.round(Math.random() * root.randomNames.length)])
 
