@@ -16,10 +16,16 @@ root.gameStatus = (game) ->
   else
     return "Finished"
 
+root.gameStarted = (errors, response) ->
+  unless response == "success"
+    alert(response)
+
 root.currentPlayer = ->
-  Game.findOne({gameId: Session.get("currentGameId")}).players.filter ((p) ->
+  a = Game.findOne({gameId: Session.get("currentGameId")}).players.filter ((p) ->
     p.clientId == Session.get("clientId")
-  )[0]
+  )
+  a[0]
+
 
 root.heartBeat = ->
   Meteor.call("heartBeat", Session.get("clientId"), Session.get("currentGameId"))

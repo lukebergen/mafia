@@ -29,14 +29,14 @@ Meteor.methods
     Game.update({gameId: id}, {$set: {name: new_name}})
 
   joinGame: (clientId, clientName, gameId) ->
-    Game.update({gameId: gameId}, {$push: {players: {id: clientId, name: clientName, lastBeat: new Date(), role: ""}}})
+    Game.update({gameId: gameId}, {$push: {players: {clientId: clientId, name: clientName, lastBeat: new Date(), role: ""}}})
 
   leaveGame: (clientId, gameId) ->
     console.log("#{clientId} is leaving game #{gameId}")
-    Game.update({gameId: gameId}, {$pull: {players: {id: clientId}}})
+    Game.update({gameId: gameId}, {$pull: {players: {clientId: clientId}}})
 
   heartBeat: (clientId, gameId) ->
-    Game.update({'players.id': clientId}, {$set: {'players.$.lastBeat': new Date()}}, true, true)
+    Game.update({'players.clientId': clientId}, {$set: {'players.$.lastBeat': new Date()}}, true, true)
 
   addMessage: (gameId, clientId, message) ->
     #clientName = Game.findOne({gameId: gameId, "players.id": clientId})
@@ -48,12 +48,26 @@ Meteor.methods
     Game.update({gameId: gameId}, {$push: {publicChat: msg_obj}})
 
   setClientName: (clientId, clientName) ->
-    Game.update({"players.clientId": clientId}, {$set: {"players.$.name": clientName}}, true, true)
+    Game.update({"players.clientId": clientId}, 
+                {$set: {"players.$.name": clientName}}, true, true)
 
   startGame: (gameId) ->
-    console.log("attempting to start game: #{gameId}")
-    game = Game.findOne(gameId: gameId)
-    return "insufficient player count" if (game.players.length < 4)
+    game = Game.findOne({gameId: gameId})
+    if (game.players.length < 4)
+      return "insufficient player count"
+    else
+      msg_obj = {name: narratorName, message: "Game Start"}
+      msg_obj2 = {name: narratorName, message: "It is day time. Please vote on which player to lynch."}
+      Game.update {gameId: gameId}, 
+        $pushAll: 
+          publicChat: [msg_obj, msg_obj2]
+        $set:
+          startTime: new Date()
+      # BOOKMARK
+      # uncommenting below causes mongo data corruption or something
+      assignRoles(game)
+      return "success"
+
 
     # something after here just destroys the server/DB requiring a meteor reset
 

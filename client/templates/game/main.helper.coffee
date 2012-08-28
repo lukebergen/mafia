@@ -14,11 +14,7 @@ root.Template.gameView.gameStarted = ->
   Game.findOne({gameId: Session.get("currentGameId")}).startTime != null
 
 root.Template.gameView.userRole = ->
-  alert("doing userRole for some reason")
   root.currentPlayer()?.role
-
-root.Template.gameView.startGame = ->
-  Meteor.call("startGame", Session.get("currentGameId"))
 
 root.Template.publicChatArea.publicMessages = ->
   Game.findOne({gameId: Session.get("currentGameId")}).publicChat
@@ -53,7 +49,8 @@ root.Template.gameView.events =
       root.leaveGame()
 
   "click #startGame": ->
-    Meteor.call("startGame", Session.get("currentGameId"))
+    if confirm("Are you sure? Once the game is started no more players will be able to join")
+      Meteor.call "startGame", Session.get("currentGameId"), gameStarted
 
   "keyup #newMessageInput": (event) ->
     if (event.keyCode == 13)

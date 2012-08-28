@@ -1,12 +1,22 @@
 root.assignRoles = (game) ->
   mafia = []
-  players = game.players
-  for [1 .. Math.floor(players.length / 4)]
-    mafia.push(players.splice(Math.round(Math.random() * players.length), 1)[0].clientId)
+  f = (p) ->
+    p.clientId
+  playerIds = _.map(game.players, f)
+  for [1 .. Math.floor(playerIds.length / 4)]
+    mafia.push(playerIds.splice(Math.round(Math.random() * playerIds.length), 1)[0])
 
-  doctor = players.splice(Math.round(Math.random() * players.length), 1)[0].clientId
-  cop = players.splice(Math.round(Math.random() * players.length), 1)[0].clientId
-  
-  Game.update({gameId: game.gameId, "players.clientId": {$in: mafia}}, {"players.$.role": "mafia"})
-  Game.update({gameId: game.gameId, "players.clientId": doctor}, {"players.$.role": "doctor"})
-  Game.update({gameId: game.gameId, "players.clientId": cop}, {"players.$.role": "cop"})
+  doctor = playerIds.splice(Math.round(Math.random() * playerIds.length), 1)[0]
+  cop = playerIds.splice(Math.round(Math.random() * playerIds.length), 1)[0]
+
+  mafia.forEach (x) ->
+    Game.update({gameId: game.gameId, "players.clientId": x}, {$set: {"players.$.role": "Mafia"}})
+  Game.update({gameId: game.gameId, "players.clientId": doctor}, {$set: {"players.$.role": "Doctor"}})
+  Game.update({gameId: game.gameId, "players.clientId": cop}, {$set: {"players.$.role": "Cop"}})
+
+  # and everybody else is a townsperson
+  playerIds.forEach (x) ->
+    Game.update({gameId: game.gameId, "players.clientId": x}, {$set: {"players.$.role": "Townsperson"}})
+
+# some global variables
+narratorName = "Narrator"
