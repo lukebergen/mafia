@@ -20,6 +20,9 @@
       <div class="row">
         {{> playerList}}
         {{> publicChatArea}}
+        {{#if userIsMafia}}
+          {{> mafiaChatArea}}
+        {{/if}}
       </div>
     {{/if}}
   </div>
@@ -55,3 +58,20 @@
   </div>
   {{updatePublicChat}}
 </template>
+
+<template name="mafiaChatArea">
+  <div class="span2">
+    <div id="mafiaChat">
+      <ul>
+        {{#each mafiaMessages}}
+          <li>
+            {{formatMessage}}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+    <input id="newMafiaMessageInput" class="span2" /><button id="sendMafiaMessage" class="btn">Chat</button>
+  </div>
+  {{updateMafiaChat}}
+</template>
+

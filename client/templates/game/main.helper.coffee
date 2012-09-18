@@ -16,6 +16,9 @@ root.Template.gameView.gameStarted = ->
 root.Template.gameView.userRole = ->
   root.currentPlayer()?.role
 
+root.Template.gameView.userIsMafia = ->
+  root.currentPlayer()?.role == "Mafia"
+
 root.Template.publicChatArea.publicMessages = ->
   Game.findOne({gameId: Session.get("currentGameId")}).publicChat
 
@@ -30,16 +33,26 @@ root.Template.publicChatArea.updatePublicChat = ->
 root.Template.publicChatArea.formatMessage = ->
   "#{this.name}: #{this.message}"
 
+root.Template.mafiaChatArea.formatMessage = ->
+  "#{this.name}: #{this.message}"
+
+root.Template.mafiaChatArea.mafiaMessages = ->
+  MafiaChat.findOne({gameId: Session.get("currentGameId")})?.messages
+
 root.Template.playerList.playerNames = ->
   Game.findOne(gameId: Session.get("currentGameId")).players.map (p) ->
     p.name
 
-addMessage = (message) ->
-  Meteor.call("addMessage", Session.get("currentGameId"), Session.get("clientId"), message, ->)
-
 sendMessageClicked = ->
-  addMessage($("#newMessageInput").val())
+  message = $("#newMessageInput").val()
+  Meteor.call("addMessage", Session.get("currentGameId"), Session.get("clientId"), message, ->)
   $("#newMessageInput").val("")
+
+sendMafiaMessageClicked = ->
+  message = $("#newMafiaMessageInput").val()
+  console.log("calling out to meteor to add mafia message: #{message}")
+  Meteor.call("mafiaAddMessage", Session.get("currentGameId"), Session.get("clientId"), message, ->)
+  $("#newMafiaMessageInput").val("")
 
 root.Template.gameView.currentGame = root.currentGame
 
@@ -58,3 +71,10 @@ root.Template.gameView.events =
 
   "click #sendMessage": ->
     sendMessageClicked()
+
+  "keyup #newMafiaMessageInput": (event) ->
+    if (event.keyCode == 13)
+      sendMafiaMessageClicked()
+
+  "click #sendMafiaMessage": ->
+    sendMafiaMessageClicked()

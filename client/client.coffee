@@ -4,6 +4,17 @@ Game = new Meteor.Collection("games")
 
 Session.set("clientId", uuid())
 
+# why does commenting this out cause problems.
+# we want the player's role changing to cause mafiaChat to be subscribed to.
+# Meteor.autosubscribe -> 
+#   role = _.find(Game.findOne({gameId: Session.get("gameId")})?.players, root.currentPlayer()?.role)
+#   clientId = Session.get("clientId")
+#   gameId = Session.get("currentGame")
+#   Meteor.subscribe("mafiaChat", gameId, clientId, role)
+
+# why this publication no getting updated? :(
+MafiaChat = new Meteor.Collection("mafiaChat")
+
 root.randomNames = ["Agosto", "Alessandro", "Angelo", "Antonio", "Armando", "Carlo", "Dante", "Emilio", "Nico", "Piero", "Raffaele", "Rocco", "Valentino", "Alessandra", "Alisa", "Andria", "Belinda", "Belladonna", "Bianca", "Caprice", "Carmela", "Donata", "Isabella", "Loretta", "Mariabella", "Phebe", "Rosalia", "Rosetta", "Vivian"]
 
 Session.set("clientName", root.randomNames[Math.round(Math.random() * root.randomNames.length)])
@@ -25,7 +36,6 @@ root.currentPlayer = ->
     p.clientId == Session.get("clientId")
   )
   a[0]
-
 
 root.heartBeat = ->
   Meteor.call("heartBeat", Session.get("clientId"), Session.get("currentGameId"))
@@ -52,4 +62,15 @@ Meteor.methods
     if (dv.scrollTop() >= root.lastScrollTop)
       dv.scrollTop(999999999)
       root.lastScrollTop = dv.scrollTop()
+    ""
+
+  addMafiaMessage: (gameId, clientId, message) ->
+    name = Session.get("clientName")
+    name = if name then "#{name}: " else ""
+    $("#mafiaChat ul").append("<li>#{name}#{message}</li>")
+    dv = $("#mafiaChat")
+    root.lastMafiaScrollTop ?= dv.scrollTop()
+    if (dv.scrollTop() >= root.lastMafiaScrollTop)
+      dv.scrollTop(999999999)
+      root.lastMafiaScrollTop = dv.scrollTop()
     ""

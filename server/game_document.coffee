@@ -9,6 +9,6 @@ game_doc = ->
     result: undefined
     players: []
     publicChat: []
-    mafiaChat: []
+    #mafiaChat: []
     gamePeriods: []
   }

@@ -5,6 +5,13 @@
   border: 1px solid;
 }
 
+#mafiaChat {
+  height: 300px;
+/*  width: 600px;*/
+  overflow: auto;
+  border: 1px solid;
+}
+
 #playerList li {
   margin: 10px 10px 10px 10px;
 }
